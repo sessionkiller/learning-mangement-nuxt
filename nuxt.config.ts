@@ -23,7 +23,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
-    'nuxt-lucide-icons'
+    'nuxt-lucide-icons',
+    '@vueuse/motion/nuxt'
   ],
 
   runtimeConfig:{

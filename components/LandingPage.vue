@@ -4,8 +4,6 @@ const currentImage = useCarousel({ totalImages: 3 });
 const { getCourses } = useApi();
 const { data: courses, isLoading, isError } = getCourses();
 
-console.log(courses);
-
 const handleCourseClick = (courseId) => {
   router.push(`/search?id=${courseId}`, {
     scroll: false,
@@ -24,8 +22,25 @@ const tags = [
 
 <template>
   <LoadingSkeleton v-if="isLoading" />
-  <div v-else class="landing">
-    <div class="landing__hero">
+  <div
+    v-else
+    class="landing"
+    v-motion
+    :initial="{
+      opacity: 0,
+    }"
+    :enter="{
+      opacity: 1,
+    }"
+    :durationn="500"
+  >
+    <div
+      class="landing__hero"
+      v-motion
+      :initial="{ y: 20, opacity: 0 }"
+      :enter="{ y: 0, opacity: 1 }"
+      :durationn="500"
+    >
       <div class="landing__hero-content">
         <h1 class="landing__title">Courses</h1>
         <p class="landing__description">
@@ -52,7 +67,13 @@ const tags = [
         />
       </div>
     </div>
-    <div class="landing__featured">
+    <div
+      class="landing__featured"
+      v-motion
+      :initial="{ opacity: 0 }"
+      :visible-once="{ opacity: 1 }"
+      :duration="500"
+    >
       <h2 class="landing__featured-title">Featured Courses</h2>
       <p class="landing__featured-description">
         From beginner to advanced, in all industries, we have the right courses
@@ -71,8 +92,16 @@ const tags = [
         <div
           v-for="(course, index) in courses.slice(0, 4)"
           :key="course.courseId"
+          v-motion
+          :initial="{ y: 50, opacity: 0 }"
+          :visible="{ y: 0, opacity: 1 }"
+          :duration="500"
+          :delay="index * 200"
         >
-          <CourseCardSearch :course="course" @handle-click="handleCourseClick" />
+          <CourseCardSearch
+            :course="course"
+            @handle-click="handleCourseClick"
+          />
         </div>
       </div>
     </div>

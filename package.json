@@ -17,9 +17,11 @@
     "@primevue/themes": "^4.2.5",
     "@tanstack/vue-query": "^5.62.16",
     "@vueuse/motion": "^2.2.6",
+    "clsx": "^2.1.1",
     "nuxt": "^3.15.1",
     "nuxt-lucide-icons": "^1.0.5",
     "primevue": "^4.2.5",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vue": "latest",
     "vue-router": "latest"

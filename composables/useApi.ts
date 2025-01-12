@@ -2,14 +2,14 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/vue-query";
 
 export const useApi = () => {
   const queryClient = useQueryClient();
-  const runtimeConfig = useRuntimeConfig()
+  const runtimeConfig = useRuntimeConfig();
 
   const toast = useToast();
 
   const baseQuery = async <T>(
     endpoint: string,
     options: any = { method: "GET" }
-  ) : Promise<T> => {
+  ): Promise<T> => {
     const baseUrl = runtimeConfig.public.apiBaseUrl;
 
     const token = await window.Clerk?.session?.getToken();
@@ -20,19 +20,19 @@ export const useApi = () => {
     };
 
     try {
-      const response = await fetch(`${baseUrl}/${endpoint}`, {
+      let result = await $fetch(`${baseUrl}/${endpoint}`, {
         ...options,
         headers,
       });
 
-      let result = await response.json();
-
       if (result.error) {
-        const errorMessage =
-          result?.message ||
-          "An error occurred";
-        toast.add({ severity: "error", detail: `Error: ${errorMessage}`, life: 3000 });
-        throw new Error(errorMessage)
+        const errorMessage = result?.message || "An error occurred";
+        toast.add({
+          severity: "error",
+          detail: `Error: ${errorMessage}`,
+          life: 3000,
+        });
+        throw new Error(errorMessage);
       }
 
       const isMutationRequest = options.method !== "GET";
@@ -40,7 +40,11 @@ export const useApi = () => {
       if (isMutationRequest) {
         const successMessage = result.data?.message;
         if (successMessage)
-          toast.add({ severity: "success", detail: successMessage, life: 3000 });
+          toast.add({
+            severity: "success",
+            detail: successMessage,
+            life: 3000,
+          });
       }
 
       if (result.data) {
@@ -57,7 +61,7 @@ export const useApi = () => {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
 
-        throw new Error(errorMessage)
+      throw new Error(errorMessage);
     }
   };
 
@@ -93,8 +97,25 @@ export const useApi = () => {
     });
   };
 
+  /*
+  ===============
+  TRANSACTIONS
+  =============== 
+  */
+  const getTransactions = (userId: string, enabled = true) => {
+    return useQuery({
+      queryKey: ["Transactions"],
+      queryFn: () => {
+        const url = `transactions?userId=${userId}`;
+        return baseQuery<Transaction[]>(url);
+      },
+      enabled,
+    });
+  };
+
   return {
     updateUser,
-    getCourses
-  }
+    getCourses,
+    getTransactions,
+  };
 };

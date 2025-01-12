@@ -7,6 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    PColumn: typeof import('primevue/column')['default']
+    PDataTable: typeof import('primevue/datatable')['default']
+    PSelect: typeof import('primevue/select')['default']
     PSkeleton: typeof import('primevue/skeleton')['default']
     PToast: typeof import('primevue/toast')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -34,6 +34,7 @@ const courseId = computed(() => {
   <div v-else-if="!user">Please sign in to access this page.</div>
   <div v-else class="dashboard">
     <!-- <AppSidebar /> -->
+    AppSidebar
     <div class="dashboard__content">
       <!-- {courseId && <ChaptersSidebar />} -->
       <div
@@ -42,6 +43,7 @@ const courseId = computed(() => {
         "
         :style="{ height: '100vh' }"
       >
+        Navbar
         <!-- <Navbar :isCoursePage="isCoursePage" /> -->
         <main class="dashboard__body">
           <slot />

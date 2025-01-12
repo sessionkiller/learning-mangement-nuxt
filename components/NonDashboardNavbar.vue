@@ -1,6 +1,8 @@
 <script setup>
-// const { user } = useUser();
-// const userRole = user?.publicMetadata?.userType as "student" | "teacher";
+import { dark } from "@clerk/themes";
+
+const { user } = useUser();
+const userRole = user.value?.publicMetadata?.userType;
 </script>
 
 <template>
@@ -26,38 +28,38 @@
           <IconBell class="nondashboard-navbar__notification-icon" />
         </button>
 
-        <!-- <SignedIn>
-            <UserButton
-              appearance={{
-                baseTheme: dark,
-                elements: {
-                  userButtonOuterIdentifier: "text-customgreys-dirtyGrey",
-                  userButtonBox: "scale-90 sm:scale-100",
-                },
-              }}
-              showName
-              userProfileMode="navigation"
-              userProfileUrl={
-                userRole === "teacher" ? "/teacher/profile" : "/user/profile"
-              }
-            />
-          </SignedIn> -->
-        <!-- <SignedOut>
-            <Link
-              href="/signin"
-              class="nondashboard-navbar__auth-button--login"
-              scroll={false}
-            >
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              class="nondashboard-navbar__auth-button--signup"
-              scroll={false}
-            >
-              Sign up
-            </Link>
-          </SignedOut> -->
+        <SignedIn>
+          <UserButton
+            :appearance="{
+              baseTheme: dark,
+              elements: {
+                userButtonOuterIdentifier: 'text-customgreys-dirtyGrey',
+                userButtonBox: 'scale-90 sm:scale-100',
+              },
+            }"
+            showName="true"
+            userProfileMode="navigation"
+            :userProfileUrl="
+              userRole === 'teacher' ? '/teacher/profile' : '/user/profile'
+            "
+          />
+        </SignedIn>
+        <SignedOut>
+          <NuxtLink
+            to="/signin"
+            class="nondashboard-navbar__auth-button--login"
+            scroll="false"
+          >
+            Log in
+          </NuxtLink>
+          <NuxtLink
+            to="/signup"
+            class="nondashboard-navbar__auth-button--signup"
+            scroll="false"
+          >
+            Sign up
+          </NuxtLink>
+        </SignedOut>
       </div>
     </div>
   </nav>

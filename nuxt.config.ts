@@ -19,6 +19,7 @@ export default defineNuxtConfig({
 
   modules: [
     "@clerk/nuxt",
+    "@vee-validate/nuxt",
     "@nuxt/image",
     "@nuxtjs/tailwindcss",
     "@primevue/nuxt-module",
@@ -42,6 +43,15 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+
+  veeValidate: {
+    // Use different names for components
+    componentNames: {
+      Form: "VeeForm",
+      Field: "VeeField",
+      ErrorMessage: "VeeErrorMessage",
+    },
+  },
 
   primevue: {
     options: {

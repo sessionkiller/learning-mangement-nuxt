@@ -16,6 +16,8 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@primevue/themes": "^4.2.5",
     "@tanstack/vue-query": "^5.62.16",
+    "@vee-validate/nuxt": "^4.15.0",
+    "@vee-validate/yup": "^4.15.0",
     "@vueuse/motion": "^2.2.6",
     "clsx": "^2.1.1",
     "nuxt": "^3.15.1",
@@ -24,7 +26,8 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.2.5"

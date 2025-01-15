@@ -13,7 +13,7 @@ defineProps<{
     class="flex"
     :class="[
       row ? 'flex-row flex-wrap items-center justify-between' : 'flex-col',
-      label ? 'h-18' : 'h-14',
+      // label ? 'h-18' : 'h-14',
     ]"
   >
     <label
@@ -39,10 +39,7 @@ defineProps<{
         }"
         class="cursor-pointer inline-block relative"
       >
-        <Icon
-          size="1.2rem"
-          name="prime:question-circle"
-        />
+        <IconCircleHelp :size="20" />
       </div>
     </label>
 
@@ -58,7 +55,7 @@ defineProps<{
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;

@@ -1,177 +1,163 @@
 <script setup>
-const routeStore = useRouteStore();
-const { syncRoute } = storeToRefs(routeStore);
+import { cn } from "~/lib/utils";
 
-const theMenuStore = useTheMenuStore();
-const { isExpandedTheMenu, itemsTheMenu } = storeToRefs(theMenuStore);
-const { toggleTheMenu } = theMenuStore;
+const { user } = useUser();
+const clerk = useClerk();
+const { path: pathname } = useRoute();
+const { isSidebarExpanded, toggleSidebar } = inject("isSidebarExpanded");
 
-const fontSize = ref(14);
-
-/* TODO: Investigar si hay una forma mejor de hacer esto */
-const getBorderStyle = (item) => {
-  return (item.color &&
-    item.route.params?.projectType &&
-    syncRoute.value?.params?.projectType === item.route.params?.projectType &&
-    item.route.name === syncRoute.value?.name) ||
-    (item.route.name === syncRoute.value?.name &&
-      !item.route.params?.projectType) ||
-    item.route.name === syncRoute.value?.meta?.props?.parent
-    ? {
-        background: item.color,
-        color: item.textColor,
-      }
-    : { borderLeft: `5px solid transparent` };
+const navLinks = {
+  student: [
+    { icon: "BookOpen", label: "Courses", href: "/user/courses" },
+    { icon: "Briefcase", label: "Billing", href: "/user/billing" },
+    { icon: "User", label: "Profile", href: "/user/profile" },
+    { icon: "Settings", label: "Settings", href: "/user/settings" },
+  ],
+  teacher: [
+    { icon: "BookOpen", label: "Courses", href: "/teacher/courses" },
+    { icon: "DollarSign", label: "Billing", href: "/teacher/billing" },
+    { icon: "User", label: "Profile", href: "/teacher/profile" },
+    { icon: "Settings", label: "Settings", href: "/teacher/settings" },
+  ],
 };
 
-watch(
-  fontSize,
-  (newValue) => {
-    const cont = document.getElementsByTagName("html");
-    if (cont.length) {
-      cont[0].style.fontSize = newValue + "px";
-    }
-  },
-  { immediate: true }
-);
+const userType = user.value?.publicMetadata?.userType || "student";
+const currentNavLinks = ref(navLinks[userType]);
 </script>
 
 <template>
   <div
     :class="[
       'overflow-hidden transition-all duration-300 ease-out h-full',
-      isExpandedTheMenu ? 'w-64' : 'w-12',
+      isSidebarExpanded ? 'w-64' : 'w-12',
     ]"
   >
     <PMenu
       data-cy="the-menu"
-      :model="itemsTheMenu"
+      :model="currentNavLinks"
       :pt="{
         root: {
           class: [
-            'the-menu bg-transparent border-0 w-64 h-full flex flex-col p-0',
+            '!bg-customgreys-primarybg !border-none shadow-lg w-64 flex flex-col p-0',
           ],
+          style: {
+            height: '100vh',
+          },
         },
         start: {
-          class: ['flex'],
+          class: ['flex flex-col gap-2 p-2'],
         },
         content: {
           class: ['border-0', 'hover:bg-gray-200'],
         },
         list: {
-          class: ['flex-1 p-0 gap-0'],
+          class: ['flex-1 !p-0 !gap-0 !mt-5'],
+        },
+        itemContent: {
+          class: 'hover:!bg-customgreys-secondarybg',
         },
         end: {
           class: [
-            'p-0 transition-all duration-300 ease-out',
-            !isExpandedTheMenu ? ' w-12' : '',
+            'transition-all duration-300 ease-out flex flex-col gap-2 p-2',
+            !isSidebarExpanded ? ' w-12' : '',
           ],
         },
       }"
     >
+      <template #start>
+        <div :class="cn('p-2', !isSidebarExpanded && 'px-0')">
+          <div
+            :class="
+              cn(
+                'app-sidebar__logo-container group cursor-pointer hover:bg-customgreys-secondarybg mt-5',
+                !isSidebarExpanded && '!px-0'
+              )
+            "
+            @click="toggleSidebar"
+          >
+            <div class="app-sidebar__logo-wrapper">
+              <NuxtImg
+                src="/logo.svg"
+                alt="Logo"
+                width="25"
+                height="20"
+                class="app-sidebar__logo"
+              />
+              <p class="app-sidebar__title text-white-50">Learn.io</p>
+            </div>
+            <IconPanelLeft class="app-sidebar__collapse-icon" />
+          </div>
+        </div>
+      </template>
       <template #item="{ item }">
-        <NuxtLink
-          v-if="item.route && item.userCanView"
-          v-slot="{ href, navigate }"
-          :to="item.route"
-          custom
-        >
+        <NuxtLink v-slot="{ href, navigate }" :to="item.href" custom>
           <a
             v-ripple
-            class="the-menu__link flex items-center cursor-pointer no-underline w-full"
-            :class="{
-              active:
-                (item.route.params?.projectType &&
-                  syncRoute.params?.projectType ===
-                    item.route.params?.projectType) ||
-                (item.route.name === syncRoute.name &&
-                  !item.route.params?.projectType) ||
-                item.route.name === syncRoute.meta?.props?.parent,
-            }"
+            :class="
+              cn(
+                'app-sidebar__nav-item flex items-center w-full h-12 relative p-8 gap-4',
+                pathname.startsWith(href) && 'bg-gray-800',
+                !pathname.startsWith(href) && 'text-customgreys-dirtyGrey',
+                !isSidebarExpanded && 'px-0 w-12 justify-center'
+              )
+            "
             :href="href"
-            :style="getBorderStyle(item)"
             @click="navigate"
           >
-            <div class="flex items-center">
-              <span
-                :class="item.icon"
-                class="mr-2"
-              />
-              <!-- <span class="mdi mdi-account" /> -->
-              <!-- <MdiIcon :icon="item.icon" /> -->
-              <Transition
-                enter-active-class="animate__animated animate__fadeIn animate__faster"
-                leave-active-class="animate__animated animate__fadeOut animate__faster"
-              >
-                <span v-show="isExpandedTheMenu">
-                  {{ item.label ? item.label : $t(item.translateLabel) }}
-                </span>
-              </Transition>
-            </div>
-          </a>
-        </NuxtLink>
-      </template>
-      <template #end>
-        <div class="p-2">
-          <p class="m-0 opacity-40">BIM CDE</p>
-        </div>
-        <PDivider class="m-0" />
-        <div
-          class="flex"
-          :class="{
-            'items-center': isExpandedTheMenu,
-            'flex-col flex-col-reverse': !isExpandedTheMenu,
-          }"
-        >
-          <span
-            class="block the-menu__link flex items-center cursor-pointer no-underline w-full hover:bg-gray-200"
-            @click="toggleTheMenu"
-          >
-            <span
-              :class="
-                !isExpandedTheMenu
-                  ? 'pi pi-angle-double-right'
-                  : 'pi pi-angle-double-left'
+            <SidebarIcon
+              :name="item.icon"
+              :class-name="
+                cn(
+                  'w-4 h-4',
+                  pathname.startsWith(href) ? 'text-white-50' : 'text-gray-500'
+                )
               "
-              class="mr-2"
             />
             <Transition
               enter-active-class="animate__animated animate__fadeIn animate__faster"
               leave-active-class="animate__animated animate__fadeOut animate__faster"
             >
-              <span v-show="isExpandedTheMenu">Contraer</span>
+              <span
+                v-show="isSidebarExpanded"
+                :class="
+                  cn(
+                    'app-sidebar__nav-text',
+                    pathname.startsWith(href)
+                      ? 'text-white-50'
+                      : 'text-gray-500'
+                  )
+                "
+              >
+                {{ item.label }}
+              </span>
             </Transition>
-          </span>
-          <PDivider v-if="isExpandedTheMenu === 'horizontal'" />
-          <div class="flex pr-1 pl-1">
-            <PButton
-              icon="pi pi-plus"
-              text
-              @click="fontSize++"
+
+            <div
+              v-if="pathname.startsWith(href)"
+              className="app-sidebar__active-indicator"
             />
-            <PButton
-              icon="pi pi-minus"
-              text
-              @click="fontSize--"
-            />
-          </div>
-        </div>
+          </a>
+        </NuxtLink>
+      </template>
+      <template #end>
+        <button
+          @click="() => clerk.signOut()"
+          :class="
+            cn(
+              'app-sidebar__signout flex items-center w-full hover:text-white-50 p-2 gap-2',
+              !isSidebarExpanded && '!px-2 w-12 justify-center'
+            )
+          "
+        >
+          <IconLogOut class="mr-2 w-4 h-4" />
+          <Transition
+            enter-active-class="animate__animated animate__fadeIn animate__faster"
+            leave-active-class="animate__animated animate__fadeOut animate__faster"
+          >
+            <span v-show="isSidebarExpanded">Sign out</span>
+          </Transition>
+        </button>
       </template>
     </PMenu>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.the-menu {
-  &__link {
-    color: var(--gray-800);
-    padding: 0.75rem 1rem 0.75rem calc(1rem - 5px);
-    height: 3rem;
-    transition: all 0.275s ease-in-out;
-
-    &.active {
-      background-color: var(--gray-300);
-    }
-  }
-}
-</style>

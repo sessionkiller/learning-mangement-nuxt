@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { cn } from "~/lib/utils";
 
 const { path: pathname } = useRoute();
@@ -6,6 +6,22 @@ const { user, isLoaded } = useUser();
 const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(
   pathname
 );
+
+const isSidebarExpanded = ref(true);
+
+function setOpen(state) {
+  isSidebarExpanded.value = state;
+}
+
+function toggleSidebar() {
+  isSidebarExpanded.value = !isSidebarExpanded.value;
+}
+
+provide("isSidebarExpanded", {
+  isSidebarExpanded: readonly(isSidebarExpanded),
+  setOpen,
+  toggleSidebar,
+});
 
 watch(user, (newUser) => {
   if (newUser) {
@@ -33,8 +49,7 @@ const courseId = computed(() => {
   <Loading v-if="!isLoaded" />
   <div v-else-if="!user">Please sign in to access this page.</div>
   <div v-else class="dashboard">
-    <!-- <AppSidebar /> -->
-    AppSidebar
+    <AppSidebar />
     <div class="dashboard__content">
       <!-- {courseId && <ChaptersSidebar />} -->
       <div

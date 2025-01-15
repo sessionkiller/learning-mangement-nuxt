@@ -26,12 +26,7 @@ const currentNavLinks = ref(navLinks[userType]);
 </script>
 
 <template>
-  <div
-    :class="[
-      'overflow-hidden transition-all duration-300 ease-out h-full',
-      isSidebarExpanded ? 'w-64' : 'w-12',
-    ]"
-  >
+  <Sidebar>
     <PMenu
       data-cy="the-menu"
       :model="currentNavLinks"
@@ -159,5 +154,5 @@ const currentNavLinks = ref(navLinks[userType]);
         </button>
       </template>
     </PMenu>
-  </div>
+  </Sidebar>
 </template>

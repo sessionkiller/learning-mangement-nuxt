@@ -3,10 +3,9 @@ export const useCheckoutNavigation = () => {
   const route = useRoute();
   const { isLoaded, isSignedIn } = useUser();
 
-  const searchParams = route.query
-
-  const courseId = searchParams.id ?? "";
-  const checkoutStep = ref(parseInt((searchParams.step as string) ?? "1", 10));
+  const courseId = route.query.id ?? "";
+  const checkoutStep = ref(1);
+  const path = ref("");
 
   const navigateToStep = (step: number) => {
     const newStep = Math.min(Math.max(step, 1), 3);
@@ -17,10 +16,14 @@ export const useCheckoutNavigation = () => {
     );
   };
 
-  watch(route, (newRoute) => {
-    console.log('searchparams changed');
-    checkoutStep.value = parseInt((newRoute.query.step as string) ?? "1", 10)
-});
+  watch(
+    route,
+    (newRoute) => {
+      checkoutStep.value = parseInt((newRoute.query.step as string) ?? "1", 10);
+      path.value = newRoute.fullPath;
+    },
+    { immediate: true }
+  );
 
   watch(
     [isLoaded, isSignedIn, checkoutStep],
@@ -32,5 +35,5 @@ export const useCheckoutNavigation = () => {
     { immediate: true }
   );
 
-  return { checkoutStep, navigateToStep };
+  return { checkoutStep, path, navigateToStep };
 };

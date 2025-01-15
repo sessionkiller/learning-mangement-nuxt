@@ -7,8 +7,6 @@ const { query: searchParams } = useRoute();
 const isCheckoutPage = searchParams.showSignUp ?? false;
 const courseId = searchParams.id;
 
-console.log(searchParams);
-
 const signUpUrl = isCheckoutPage
   ? `/checkout?step=1&id=${courseId}&showSignUp=true`
   : "/signup";

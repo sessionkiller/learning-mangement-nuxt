@@ -2,7 +2,7 @@
 import { dark } from "@clerk/themes";
 
 const { user } = useUser();
-const userRole = user.value?.publicMetadata?.userType;
+const userRole = computed(() => user.value?.publicMetadata?.userType);
 </script>
 
 <template>

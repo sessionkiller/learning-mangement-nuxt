@@ -17,7 +17,7 @@ const emit = defineEmits(["handle-click"]);
 
 <template>
   <div
-    @click="() => emit('handle-click', course.courseId)"
+    @click="() => emit('handle-click')"
     :class="`course-card-search group ${
       isSelected
         ? 'course-card-search--selected'

@@ -100,7 +100,7 @@ const tags = [
         >
           <CourseCardSearch
             :course="course"
-            @handle-click="handleCourseClick"
+            @handle-click="handleCourseClick(course.courseId)"
           />
         </div>
       </div>

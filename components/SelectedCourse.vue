@@ -8,9 +8,10 @@ defineProps({
   }
 })
 
-defineEmits(['handle-enroll-now'])
-</script>
+const emit = defineEmits(['handle-enroll-now'])
 
+const handleEnrollNow = (courseId) => emit('handle-enroll-now', courseId)
+</script>
 
 <template>
 

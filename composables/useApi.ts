@@ -97,6 +97,16 @@ export const useApi = () => {
     });
   };
 
+  const getCourse = (id: string) => {
+    return useQuery({
+      queryKey: ["Courses", id],
+      queryFn: () => {
+        const url = `courses/${id}`;
+        return baseQuery<Course>(url);
+      },
+    });
+  };
+
   /*
   ===============
   TRANSACTIONS
@@ -116,6 +126,7 @@ export const useApi = () => {
   return {
     updateUser,
     getCourses,
+    getCourse,
     getTransactions,
   };
 };

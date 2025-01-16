@@ -31,7 +31,10 @@ export default defineNuxtConfig({
     clerkSecretKey: "",
     public: {
       apiBaseUrl: "",
+      localUrl: "",
+      vercelUrl: "",
       clerkPublishableKey: "",
+      stripePublicKey: ""
     },
   },
 

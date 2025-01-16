@@ -1305,6 +1305,11 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/merge-streams/-/merge-streams-2.3.0.tgz#719df7fb41766bc143369eaa0dd56d8dc87c9958"
   integrity sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==
 
+"@stripe/stripe-js@^5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-5.5.0.tgz#ae01b0258b9c3f874fd15766260a67fb6726fb1b"
+  integrity sha512-lkfjyAd34aeMpTKKcEVfy8IUyEsjuAT3t9EXr5yZDtdIUncnZpedl/xLV16Dkd4z+fQwixScsCCDxSMNtBOgpQ==
+
 "@tanstack/match-sorter-utils@^8.19.4":
   version "8.19.4"
   resolved "https://registry.yarnpkg.com/@tanstack/match-sorter-utils/-/match-sorter-utils-8.19.4.tgz#dacf772b5d94f4684f10dbeb2518cf72dccab8a5"
@@ -6250,6 +6255,13 @@ vue-router@^4.5.0, vue-router@latest:
   integrity sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==
   dependencies:
     "@vue/devtools-api" "^6.6.4"
+
+vue-stripe-js@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-stripe-js/-/vue-stripe-js-2.0.1.tgz#3f602b28c785d39e14b363e796ccf6b40ad622a9"
+  integrity sha512-BwpIbnzOAl+TgBJ0D8LWj07CKl70SDdS/2AbNPfEqEtg3ggWRqfWQaUSEWwIG9Do5Ma+QBm2HevQFQlcKDbn5Q==
+  dependencies:
+    "@stripe/stripe-js" "^5.5.0"
 
 vue@^3.5.13, vue@latest:
   version "3.5.13"

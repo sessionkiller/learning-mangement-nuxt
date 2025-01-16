@@ -123,10 +123,28 @@ export const useApi = () => {
     });
   };
 
+  const createStripePaymentIntent = useMutation({
+    mutationFn: ({amount}: { amount: number }) =>
+      baseQuery('transactions/stripe/payment-intent', {
+        method: "POST",
+        body: { amount },
+      })
+  });
+
+  const createTransaction = useMutation({
+    mutationFn: (transaction: Partial<Transaction>) =>
+      baseQuery('transactions', {
+        method: "POST",
+        body: transaction,
+      })
+  });
+
   return {
     updateUser,
     getCourses,
     getCourse,
     getTransactions,
+    createTransaction,
+    createStripePaymentIntent
   };
 };

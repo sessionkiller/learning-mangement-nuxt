@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     "@primevue/nuxt-module",
     "nuxt-lucide-icons",
     "@vueuse/motion/nuxt",
+    "@pinia/nuxt",
   ],
 
   runtimeConfig: {
@@ -34,7 +35,7 @@ export default defineNuxtConfig({
       localUrl: "",
       vercelUrl: "",
       clerkPublishableKey: "",
-      stripePublicKey: ""
+      stripePublicKey: "",
     },
   },
 

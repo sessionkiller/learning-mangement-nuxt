@@ -1,0 +1,1 @@
+<template>Course page</template>

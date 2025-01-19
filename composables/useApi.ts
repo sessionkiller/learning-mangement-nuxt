@@ -107,6 +107,44 @@ export const useApi = () => {
     });
   };
 
+  const createCourse = useMutation({
+    mutationFn: (body: { teacherId: string; teacherName: string }) =>
+      baseQuery<Course>("courses", {
+        method: "POST",
+        body,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Courses"] });
+    },
+  });
+
+  const updateCourse = useMutation({
+    mutationFn: ({
+      courseId,
+      formData,
+    }: {
+      courseId: string;
+      formData: FormData;
+    }) =>
+      baseQuery<Course>(`courses/${courseId}`, {
+        method: "PUT",
+        body: formData,
+      }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["Courses", data.courseId] });
+    },
+  });
+
+  const deleteCourse = useMutation({
+    mutationFn: (courseId: string) =>
+      baseQuery<{ message: string }>(`courses/${courseId}`, {
+        method: "DELETE",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Courses"] });
+    },
+  });
+
   /*
   ===============
   TRANSACTIONS
@@ -124,27 +162,48 @@ export const useApi = () => {
   };
 
   const createStripePaymentIntent = useMutation({
-    mutationFn: ({amount}: { amount: number }) =>
-      baseQuery('transactions/stripe/payment-intent', {
+    mutationFn: ({ amount }: { amount: number }) =>
+      baseQuery("transactions/stripe/payment-intent", {
         method: "POST",
         body: { amount },
-      })
+      }),
   });
 
   const createTransaction = useMutation({
     mutationFn: (transaction: Partial<Transaction>) =>
-      baseQuery('transactions', {
+      baseQuery("transactions", {
         method: "POST",
         body: transaction,
-      })
+      }),
   });
+
+  /* 
+    ===============
+    USER COURSE PROGRESS
+    =============== 
+    */
+
+  const getUserEnrolledCourses = (userId: string, enabled = true) => {
+    return useQuery({
+      queryKey: ["Courses", "UserCourseProgress"],
+      queryFn: () => {
+        const url = `users/course-progress/${userId}/enrolled-courses`;
+        return baseQuery<Course[]>(url);
+      },
+      enabled,
+    });
+  };
 
   return {
     updateUser,
     getCourses,
     getCourse,
+    createCourse,
+    updateCourse,
+    deleteCourse,
     getTransactions,
     createTransaction,
-    createStripePaymentIntent
+    createStripePaymentIntent,
+    getUserEnrolledCourses,
   };
 };

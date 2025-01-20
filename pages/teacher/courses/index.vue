@@ -53,29 +53,31 @@ const handleCategoryChange = (categoryValue: string) => {
 </script>
 
 <template>
-  <Loading v-if="isLoading" />
-  <div v-else-if="isError || !courses">Error loading courses.</div>
-  <div v-else class="teacher-courses">
-    <Header title="Courses" subtitle="Browse your courses">
-      <template #rightElement>
-        <PButton @click="handleCreateCourse" class="teacher-courses__header">
-          Create Course
-        </PButton>
-      </template>
-    </Header>
-    <Toolbar
-      @search-change="handleSearchChange"
-      @category-change="handleCategoryChange"
-    />
-    <div class="teacher-courses__grid">
-      <TeacherCourseCard
-        v-for="course in filteredCourses"
-        :key="course.courseId"
-        :course="course"
-        :is-owner="course.teacherId === user?.id"
-        @on-edit="handleEdit"
-        @on-delete="handleDelete"
+  <DashboardLayout>
+    <Loading v-if="isLoading" />
+    <div v-else-if="isError || !courses">Error loading courses.</div>
+    <div v-else class="teacher-courses">
+      <Header title="Courses" subtitle="Browse your courses">
+        <template #rightElement>
+          <PButton @click="handleCreateCourse" class="teacher-courses__header">
+            Create Course
+          </PButton>
+        </template>
+      </Header>
+      <Toolbar
+        @search-change="handleSearchChange"
+        @category-change="handleCategoryChange"
       />
+      <div class="teacher-courses__grid">
+        <TeacherCourseCard
+          v-for="course in filteredCourses"
+          :key="course.courseId"
+          :course="course"
+          :is-owner="course.teacherId === user?.id"
+          @on-edit="handleEdit"
+          @on-delete="handleDelete"
+        />
+      </div>
     </div>
-  </div>
+  </DashboardLayout>
 </template>

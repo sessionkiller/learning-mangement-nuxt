@@ -62,6 +62,11 @@ export const useCoursesStore = defineStore("courses", () => {
   }
 
   return {
+    sections,
+    isChapterModalOpen,
+    isSectionModalOpen,
+    selectedSectionIndex,
+    selectedChapterIndex,
     setSections,
     openChapterModal,
     closeChapterModal,

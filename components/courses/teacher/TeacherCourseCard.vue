@@ -1,4 +1,6 @@
 <script setup>
+import { cn } from '~/lib/utils';
+
 const props = defineProps({
   course: {
     type: Object,
@@ -17,14 +19,24 @@ const onDelete = () => emit("on-delete", props.course);
 </script>
 
 <template>
-  <PCard class="course-card-teacher group">
-    <template #header class="course-card-teacher__header">
+  <PCard class="course-card-teacher group" :pt="{
+    header: {
+      class: 'course-card-teacher__header'
+    },
+    title: {
+      class: 'course-card-teacher__title'
+    },
+    subtitle: {
+      class: 'course-card-teacher__category'
+    }
+  }">
+    <template #header>
       <NuxtImg
         :src="course.image || '/placeholder.png'"
         :alt="course.title"
         width="370"
         height="150"
-        class="course-card-teacher__image"
+        class="course-card-teacher__image fill"
       />
     </template>
     <template #title class="course-card-teacher__title">
@@ -64,13 +76,14 @@ const onDelete = () => emit("on-delete", props.course);
       <div class="w-full xl:flex space-y-2 xl:space-y-0 gap-2 mt-3">
         <template v-if="isOwner">
           <div>
-            <PButton class="course-card-teacher__edit-button" @click="onEdit">
+            <PButton severity="warn" class="course-card-teacher__edit-button" @click="onEdit">
               <IconPencil class="w-4 h-4 mr-2" />
               Edit
             </PButton>
           </div>
           <div>
             <PButton
+              severity="danger"
               class="course-card-teacher__delete-button"
               @click="onDelete"
             >

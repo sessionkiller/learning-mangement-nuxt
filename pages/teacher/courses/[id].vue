@@ -206,8 +206,7 @@ watch(
 
             <p v-if="isLoading">Loading course content...</p>
             <div v-else-if="sections.length > 0">
-              DroppableComponent
-              <!-- <DroppableComponent />  -->
+              <DroppableComponent /> 
             </div>
             <p v-else>No sections available</p>
           </div>

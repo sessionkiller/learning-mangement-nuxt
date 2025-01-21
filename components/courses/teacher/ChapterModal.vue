@@ -24,7 +24,11 @@ const schema = object({
   title: string().min(2, "Title must be at least 2 characters"),
   content: string().min(10, "Content must be at least 10 characters"),
   video: mixed()
-    .oneOf([string(), mixed((input): input is File => input instanceof File)])
+    .test(
+      "fileType",
+      "Video must be a string or an instance of File",
+      value => value === undefined || typeof value === "string" || value instanceof File
+    )
     .optional(),
 });
 

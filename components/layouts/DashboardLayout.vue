@@ -35,7 +35,7 @@ const courseId = computed(() => {
   <div v-else class="dashboard">
     <AppSidebar />
     <div class="dashboard__content">
-      <!-- {courseId && <ChaptersSidebar />} -->
+      <ChaptersSidebar v-if="courseId" />
       <div
         :class="
           cn('dashboard__main', isCoursePage && 'dashboard__main--not-course')

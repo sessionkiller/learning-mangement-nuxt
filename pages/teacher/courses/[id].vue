@@ -5,8 +5,10 @@ import { centsToDollars, createCourseFormData } from "~/lib/utils";
 const { params } = useRoute();
 const id = params.id as string;
 
+const courseId = computed(() => id)
+
 const { getCourse, updateCourse } = useApi();
-const { data: course, isLoading, refetch } = getCourse(id);
+const { data: course, isLoading, refetch } = getCourse(courseId);
 //   const [getUploadVideoUrl] = useGetUploadVideoUrlMutation();
 
 const coursesStore = useCoursesStore();

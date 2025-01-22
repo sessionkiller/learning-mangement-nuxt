@@ -7,7 +7,7 @@ const { userId, isLoaded } = useAuth();
 const { getTransactions } = useApi();
 
 const { data: transactions, isLoading: isLoadingTransactions } =
-  getTransactions(userId.value, userId.value && isLoaded.value);
+  getTransactions(userId);
 
 const filteredData = computed(
   () =>

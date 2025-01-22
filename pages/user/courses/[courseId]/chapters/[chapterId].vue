@@ -15,21 +15,19 @@ const {
   setHasMarkedComplete,
 } = useCourseProgressData();
 
-console.log("currentChapter.video:", currentChapter);
-
 const handleProgress = ({ played }: { played: number }) => {
   if (
     played >= 0.8 &&
-    !hasMarkedComplete &&
-    currentChapter &&
-    currentSection &&
+    !hasMarkedComplete.value &&
+    currentChapter.value &&
+    currentSection.value &&
     userProgress.value?.sections &&
     !isChapterCompleted()
   ) {
     setHasMarkedComplete(true);
     updateChapterProgress(
-      currentSection.sectionId,
-      currentChapter.chapterId,
+      currentSection.value.sectionId,
+      currentChapter.value.chapterId,
       true
     );
   }
@@ -125,7 +123,7 @@ const handleProgress = ({ played }: { played: number }) => {
                 >
                   <template #title>Resources Content</template>
                   <template #content
-                    >{/* Add resources content here */}</template
+                    >Add resources content here</template
                   >
                 </PCard>
               </PTabPanel>
@@ -142,7 +140,7 @@ const handleProgress = ({ played }: { played: number }) => {
                   }"
                 >
                   <template #title>Quiz Content</template>
-                  <template #content>{/* Add quiz content here */}</template>
+                  <template #content>Add quiz content here</template>
                 </PCard>
               </PTabPanel>
             </PTabPanels>

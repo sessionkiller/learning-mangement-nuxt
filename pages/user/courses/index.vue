@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const router = useRouter();
 const { user, isLoaded } = useUser();
 
@@ -6,14 +7,16 @@ const searchTerm = ref("");
 const selectedCategory = ref("all");
 
 const { getUserEnrolledCourses } = useApi();
+
+const userId = computed(() =>
+user.value?.id
+)
+
 const {
   data: courses,
   isLoading,
-  isError,
-} = getUserEnrolledCourses(
-  user.value?.id ?? "",
-  !!isLoaded.value && !!user.value
-);
+  isError
+} = getUserEnrolledCourses(userId)
 
 const filteredCourses = computed(() => {
   if (!courses.value) return [];
@@ -51,6 +54,7 @@ const handleSearchChange = (searchValue: string) => {
 const handleCategoryChange = (categoryValue: string) => {
   selectedCategory.value = categoryValue;
 };
+
 </script>
 
 <template>

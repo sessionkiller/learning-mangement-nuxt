@@ -1,4 +1,9 @@
-import { useQueryClient, useQuery, useMutation } from "@tanstack/vue-query";
+import {
+  useQueryClient,
+  useQuery,
+  useMutation,
+  skipToken,
+} from "@tanstack/vue-query";
 
 export const useApi = () => {
   const queryClient = useQueryClient();
@@ -97,14 +102,18 @@ export const useApi = () => {
     });
   };
 
-  const getCourse = (id: string, enabled = true) => {
+  const getCourse = (courseId: ComputedRef<string | undefined>) => {
+    const queryFn = computed(() =>
+      !!courseId.value
+        ? () => {
+          const url = `courses/${courseId.value}`;
+          return baseQuery<Course>(url);
+          }
+        : skipToken
+    );
     return useQuery({
-      queryKey: ["Courses", id],
-      queryFn: () => {
-        const url = `courses/${id}`;
-        return baseQuery<Course>(url);
-      },
-      enabled,
+      queryKey: ["Courses", courseId.value],
+      queryFn: queryFn
     });
   };
 
@@ -151,14 +160,18 @@ export const useApi = () => {
   TRANSACTIONS
   =============== 
   */
-  const getTransactions = (userId: string, enabled = true) => {
+  const getTransactions = (userId: ComputedRef<string | undefined>) => {
+    const queryFn = computed(() =>
+      !!userId.value
+        ? () => {
+          const url = `transactions?userId=${userId.value}`;
+          return baseQuery<Transaction[]>(url);
+          }
+        : skipToken
+    );
     return useQuery({
       queryKey: ["Transactions"],
-      queryFn: () => {
-        const url = `transactions?userId=${userId}`;
-        return baseQuery<Transaction[]>(url);
-      },
-      enabled,
+      queryFn: queryFn
     });
   };
 
@@ -184,29 +197,38 @@ export const useApi = () => {
     =============== 
     */
 
-  const getUserEnrolledCourses = (userId: string, enabled = true) => {
+  const getUserEnrolledCourses = (userId: ComputedRef<string | undefined>) => {
+    const queryFn = computed(() =>
+      !!userId.value
+        ? () => {
+            const url = `users/course-progress/${userId.value}/enrolled-courses`;
+            return baseQuery<Course[]>(url);
+          }
+        : skipToken
+    );
+
     return useQuery({
       queryKey: ["Courses", "UserCourseProgress"],
-      queryFn: () => {
-        const url = `users/course-progress/${userId}/enrolled-courses`;
-        return baseQuery<Course[]>(url);
-      },
-      enabled,
+      queryFn: queryFn,
     });
   };
 
   const getUserCourseProgress = (
-    userId: string,
-    courseId: string,
-    enabled = true
+    userId: ComputedRef<string | undefined>,
+    courseId: ComputedRef<string | undefined>,
   ) => {
+    const queryFn = computed(() =>
+      !!userId.value && !!courseId.value
+        ? () => {
+          const url = `users/course-progress/${userId.value}/courses/${courseId.value}`;
+          return baseQuery<UserCourseProgress>(url);
+          }
+        : skipToken
+    );
+
     return useQuery({
       queryKey: ["UserCourseProgress"],
-      queryFn: () => {
-        const url = `users/course-progress/${userId}/courses/${courseId}`;
-        return baseQuery<UserCourseProgress>(url);
-      },
-      enabled,
+      queryFn: queryFn
     });
   };
 

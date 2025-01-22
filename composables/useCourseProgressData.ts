@@ -2,7 +2,8 @@ export const useCourseProgressData = () => {
   const { params } = useRoute();
   const { user, isLoaded } = useUser();
 
-  const courseId = (params.courseId ?? "") as string;
+  const userId = computed(() => user.value?.id)
+  const courseId = computed(() => (params.courseId ?? "") as string);
   const chapterId = (params.chapterId ?? "") as string;
 
   const hasMarkedComplete = ref(false);
@@ -15,40 +16,38 @@ export const useCourseProgressData = () => {
     useApi();
 
   const { data: course, isLoading: courseLoading } = getCourse(
-    courseId,
-    !!courseId
+    courseId
   );
 
   const { data: userProgress, isLoading: progressLoading } =
     getUserCourseProgress(
-      user.value?.id ?? "",
-      courseId,
-
-      isLoaded.value && !!user.value && !!courseId
+      userId,
+      courseId
     );
 
   const isLoading = computed(
     () => !isLoaded.value || courseLoading.value || progressLoading.value
   );
 
-  const currentSection = course.value?.sections.find((s) =>
+  const currentSection = computed(() => course.value?.sections.find((s) =>
     s.chapters.some((c) => c.chapterId === chapterId)
-  );
+  ));
 
-  const currentChapter = currentSection?.chapters.find(
+  const currentChapter = computed(() => currentSection.value?.chapters.find(
     (c) => c.chapterId === chapterId
-  );
+  ));
 
   const isChapterCompleted = () => {
-    if (!currentSection || !currentChapter || !userProgress.value?.sections)
+    if (!currentSection.value || !currentChapter.value || !userProgress.value?.sections){
       return false;
+    }
 
     const section = userProgress.value.sections.find(
-      (s) => s.sectionId === currentSection.sectionId
+      (s) => s.sectionId === currentSection.value?.sectionId
     );
     return (
       section?.chapters.some(
-        (c) => c.chapterId === currentChapter.chapterId && c.completed
+        (c) => c.chapterId === currentChapter.value?.chapterId && c.completed
       ) ?? false
     );
   };
@@ -74,7 +73,7 @@ export const useCourseProgressData = () => {
 
     updateUserCourseProgress.mutate({
       userId: user.value.id,
-      courseId,
+      courseId: courseId.value,
       progressData: {
         sections: updatedSections,
       },

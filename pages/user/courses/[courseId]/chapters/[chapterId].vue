@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { VideoPlayer } from "@videojs-player/vue";
-import "video.js/dist/video-js.css";
 
 const {
   user,
@@ -15,9 +13,8 @@ const {
   setHasMarkedComplete,
 } = useCourseProgressData();
 
-const handleProgress = ({ played }: { played: number }) => {
+const handle80PercentPlayed = () => {
   if (
-    played >= 0.8 &&
     !hasMarkedComplete.value &&
     currentChapter.value &&
     currentSection.value &&
@@ -72,12 +69,10 @@ const handleProgress = ({ played }: { played: number }) => {
           }"
         >
           <template #content>
-            <video-player
+            <CustomVideo
               v-if="currentChapter?.video"
               :src="(currentChapter.video as string)"
-              @progress="handleProgress"
-              controls
-              class="w-full h-full"
+              @on-80%-played="handle80PercentPlayed"
             />
             <div v-else class="course__no-video">
               No video available for this chapter.
@@ -122,9 +117,7 @@ const handleProgress = ({ played }: { played: number }) => {
                   }"
                 >
                   <template #title>Resources Content</template>
-                  <template #content
-                    >Add resources content here</template
-                  >
+                  <template #content>Add resources content here</template>
                 </PCard>
               </PTabPanel>
               <PTabPanel class="course__tab-content" value="Quiz">

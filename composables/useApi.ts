@@ -97,13 +97,14 @@ export const useApi = () => {
     });
   };
 
-  const getCourse = (id: string) => {
+  const getCourse = (id: string, enabled = true) => {
     return useQuery({
       queryKey: ["Courses", id],
       queryFn: () => {
         const url = `courses/${id}`;
         return baseQuery<Course>(url);
       },
+      enabled,
     });
   };
 
@@ -194,6 +195,45 @@ export const useApi = () => {
     });
   };
 
+  const getUserCourseProgress = (
+    userId: string,
+    courseId: string,
+    enabled = true
+  ) => {
+    return useQuery({
+      queryKey: ["UserCourseProgress"],
+      queryFn: () => {
+        const url = `users/course-progress/${userId}/courses/${courseId}`;
+        return baseQuery<UserCourseProgress>(url);
+      },
+      enabled,
+    });
+  };
+
+  const updateUserCourseProgress = useMutation({
+    mutationFn: ({
+      userId,
+      courseId,
+      progressData,
+    }: {
+      userId: string;
+      courseId: string;
+      progressData: {
+        sections: SectionProgress[];
+      };
+    }) =>
+      baseQuery<UserCourseProgress>(
+        `users/course-progress/${userId}/courses/${courseId}`,
+        {
+          method: "PUT",
+          body: progressData,
+        }
+      ),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["UserCourseProgress"] });
+    },
+  });
+
   return {
     updateUser,
     getCourses,
@@ -205,5 +245,7 @@ export const useApi = () => {
     createTransaction,
     createStripePaymentIntent,
     getUserEnrolledCourses,
+    getUserCourseProgress,
+    updateUserCourseProgress,
   };
 };

@@ -14,8 +14,16 @@ const onGoToCourse = () => emit("go-to-course", props.course);
 </script>
 
 <template>
-  <PCard class="course-card group" @click="onGoToCourse">
-    <template #header class="course-card__header">
+  <PCard
+    class="course-card group"
+    @click="onGoToCourse"
+    :pt="{
+      header: { class: 'course-card__header' },
+      title: { class: 'course-card__title' },
+      footer: { class: 'course-card__footer' },
+    }"
+  >
+    <template #header>
       <NuxtImg
         :src="course.image || '/placeholder.png'"
         :alt="course.title"
@@ -25,9 +33,7 @@ const onGoToCourse = () => emit("go-to-course", props.course);
       />
     </template>
 
-    <template #title class="course-card__title"
-      >{{ course.title }}: {{ course.description }}</template
-    >
+    <template #title>{{ course.title }}: {{ course.description }}</template>
 
     <template #content>
       <div class="flex items-center gap-2">
@@ -43,7 +49,7 @@ const onGoToCourse = () => emit("go-to-course", props.course);
       </div>
     </template>
 
-    <template #footer class="course-card__footer">
+    <template #footer>
       <div class="course-card__category">{{ course.category }}</div>
       <span class="course-card__price">
         {{ formatPrice(course.price) }}

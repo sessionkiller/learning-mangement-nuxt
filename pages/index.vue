@@ -1,5 +1,5 @@
 <template>
-  <NonDashboardLayout>
+  <NuxtLayout name="nondashboard">
     <LandingPage />
-  </NonDashboardLayout>
+  </NuxtLayout>
 </template>

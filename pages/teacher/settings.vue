@@ -1,6 +1,6 @@
 <template>
-    <DashboardLayout>
+    <NuxtLayout name="dashboard">
       <SettingsPage />
-    </DashboardLayout>
+    </NuxtLayout>
   </template>
   

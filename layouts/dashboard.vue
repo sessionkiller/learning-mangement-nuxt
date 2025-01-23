@@ -7,6 +7,22 @@ const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(
   pathname
 );
 
+const isSidebarExpanded = ref(true);
+
+function setOpen(state) {
+  isSidebarExpanded.value = state;
+}
+
+function toggleSidebar() {
+  isSidebarExpanded.value = !isSidebarExpanded.value;
+}
+
+provide("isSidebarExpanded", {
+  isSidebarExpanded: readonly(isSidebarExpanded),
+  setOpen,
+  toggleSidebar,
+});
+
 watch(user, (newUser) => {
   if (newUser) {
     const userRole = newUser.publicMetadata?.userType || "student";

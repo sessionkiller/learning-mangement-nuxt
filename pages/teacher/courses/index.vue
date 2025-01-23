@@ -53,7 +53,7 @@ const handleCategoryChange = (categoryValue: string) => {
 </script>
 
 <template>
-  <DashboardLayout>
+  <NuxtLayout name="dashboard">
     <Loading v-if="isLoading" />
     <div v-else-if="isError || !courses">Error loading courses.</div>
     <div v-else class="teacher-courses">
@@ -79,5 +79,5 @@ const handleCategoryChange = (categoryValue: string) => {
         />
       </div>
     </div>
-  </DashboardLayout>
+  </NuxtLayout>
 </template>

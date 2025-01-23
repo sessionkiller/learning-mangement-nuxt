@@ -32,7 +32,7 @@ const handleEnrollNow = (courseId) => {
 };
 </script>
 <template>
-  <NonDashboardLayout>
+  <NuxtLayout name="nondashboard">
     <Loading v-if="isLoading" />
     <div v-else-if="isError || !courses">Failed to fetch courses</div>
     <div
@@ -95,5 +95,5 @@ const handleEnrollNow = (courseId) => {
         </div>
       </div>
     </div>
-  </NonDashboardLayout>
+  </NuxtLayout>
 </template>

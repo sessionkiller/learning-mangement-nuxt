@@ -1,5 +1,5 @@
 <template>
-  <AuthLayout>
+  <NuxtLayout name="auth">
     <SignInComponent />
-  </AuthLayout>
+  </NuxtLayout>
 </template>

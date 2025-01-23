@@ -32,7 +32,7 @@ const handle80PercentPlayed = () => {
 </script>
 
 <template>
-  <DashboardLayout>
+  <NuxtLayout name="dashboard">
     <Loading v-if="isLoading" />
     <div v-else-if="!user">Please sign in to view this course.</div>
     <div v-else-if="!course || !userProgress">Error loading course</div>
@@ -174,5 +174,5 @@ const handle80PercentPlayed = () => {
         </div>
       </div>
     </div>
-  </DashboardLayout>
+  </NuxtLayout>
 </template>

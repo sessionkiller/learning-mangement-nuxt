@@ -91,7 +91,7 @@ watch(
 </script>
 
 <template>
-  <DashboardLayout>
+  <NuxtLayout name="dashboard">
     <div>
       <div class="flex items-center gap-5 mb-5">
         <button
@@ -218,5 +218,5 @@ watch(
       <ChapterModal />
       <SectionModal />
     </div>
-  </DashboardLayout>
+  </NuxtLayout>
 </template>

@@ -2,8 +2,6 @@
 const router = useRouter();
 const { setOpen } = inject("isSidebarExpanded");
 
-const expandedSections = ref([]);
-
 const {
   user,
   course,
@@ -15,16 +13,6 @@ const {
 } = useCourseProgressData();
 
 const sidebarRef = ref(null);
-
-const toggleSection = (sectionTitle) => {
-  if (expandedSections.value.includes(sectionTitle)) {
-    expandedSections.value = expandedSections.value.filter(
-      (title) => title !== sectionTitle
-    );
-  } else {
-    expandedSections.value.push(sectionTitle);
-  }
-};
 
 const handleChapterClick = (sectionId, chapterId) => {
   router.push(`/user/courses/${courseId.value}/chapters/${chapterId}`);
@@ -55,8 +43,6 @@ onMounted(() => {
       "
       :chapterId="chapterId"
       :courseId="courseId"
-      :expandedSections="expandedSections"
-      @toggle-section="toggleSection"
       @handle-chapter-click="handleChapterClick"
       @update-chapter-progress="updateChapterProgress"
     />

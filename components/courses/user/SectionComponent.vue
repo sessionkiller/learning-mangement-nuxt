@@ -5,20 +5,20 @@ const props = defineProps<{
   sectionProgress: any;
   chapterId: string;
   courseId: string;
-  expandedSections: string[];
 }>();
+
+const chaptersSidebarStore = useChaptersSidebar();
+const {expandedSections} = storeToRefs(chaptersSidebarStore)
 
 const completedChapters =
   props.sectionProgress?.chapters.filter((c: any) => c.completed).length || 0;
 const totalChapters = props.section.chapters.length;
-const isExpanded = computed(() => props.expandedSections.includes(props.section.sectionTitle));
+const isExpanded = computed(() => expandedSections.value.includes(props.section.sectionTitle));
 
-const toggleSection = (...args: any) => emit("toggle-section", ...args);
 const handleChapterClick = (...args: any) => emit("handle-chapter-click", ...args);
 const updateChapterProgress = (...args: any) => emit("update-chapter-progress", ...args);
 
 const emit = defineEmits([
-  "toggle-section",
   "handle-chapter-click",
   "update-chapter-progress",
 ]);
@@ -27,7 +27,7 @@ const emit = defineEmits([
 <template>
   <div class="chapters-sidebar__section">
     <div
-      @click="() => toggleSection(section.sectionTitle)"
+      @click="() => chaptersSidebarStore.toggleSection(section.sectionTitle)"
       class="chapters-sidebar__section-header"
     >
       <div class="chapters-sidebar__section-title-wrapper">
